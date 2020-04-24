@@ -1,0 +1,518 @@
+﻿@model Parichay.Bussiness.Model.ReportPDF
+  
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.ReportNameTitle</title>
+
+    <style>
+
+        .invoice {
+            margin-top: 30px;
+        }
+
+            .invoice table {
+                /* border-collapse: collapse; */
+                /* border-spacing: 0; */
+                margin-left: 10px;
+            }
+
+                .invoice table td,
+                .invoice table th {
+                    padding: 10px;
+                    background: rgba(238, 238, 238, 0.6);
+                    border-bottom: 2px solid #fff;
+                    color: #03535e;
+                }
+
+                .invoice table th {
+                    white-space: nowrap;
+                    font-weight: 600;
+                    font-size: 15px
+                }
+
+                .invoice table td h3 {
+                    margin: 0;
+                    font-weight: 400;
+                    color: #03535e;
+                    font-size: 1.5em
+                }
+
+                .invoice table .qty,
+                .invoice table .total,
+                .invoice table .unit {
+                    text-align: right;
+                    font-size: 1.2em
+                }
+
+                .invoice table .no {
+                    color: #fff;
+                    font-size: 1.0em;
+                    background: #03535e;
+                }
+
+                .invoice table .unit {
+                    background: #ddd
+                }
+
+                .invoice table .total {
+                    background: #03535e;
+                    color: #fff
+                }
+
+                .invoice table .text-left {
+                    text-align: left;
+                }
+
+                .invoice table tbody tr:last-child td {
+                    border: none
+                }
+
+        .billing {
+            margin-top: 82%;
+        }
+
+            .billing table tfoot td {
+                background: 0 0;
+                border-bottom: none;
+                white-space: nowrap;
+                text-align: right;
+                padding: 10px 20px;
+                font-size: 1.2em;
+                border-top: 1px solid #aaa
+            }
+
+            .billing table tfoot tr:first-child td {
+                border-top: none
+            }
+
+            .billing table tfoot tr:last-child td {
+                color: #03535e;
+                font-size: 1.4em;
+                border-top: 1px solid #3989c6;
+                font-weight: 600;
+            }
+
+            .billing table tfoot tr td:first-child {
+                border: none
+            }
+
+        .invoice table tr td {
+            font-size: 15px;
+        }
+    </style>
+
+    <style>
+
+            @@page {
+                size: auto;
+                margin: 0mm;
+            }
+
+            html {
+                margin: 0px;
+                /* this affects the margin on the html before sending to printer */
+            }
+
+            body {
+                font-family: Arial;
+                font-size: 12px;
+            }
+
+            .header {
+                z-index: 1;
+                position: relative;
+            }
+
+                .header .skew:before {
+                    content: '';
+                    position: absolute;
+                    left: 0;
+                    bottom: 0;
+                    overflow: visible;
+                    width: 100%;
+                    height: 250px;
+                    background: #03535e;
+                    z-index: -1;
+                    -webkit-transform: skewY(-3deg);
+                    -moz-transform: skewY(-3deg);
+                    -ms-transform: skewY(-3deg);
+                    -o-transform: skewY(-3deg);
+                    transform: skewY(-3deg);
+                    -webkit-backface-visibility: hidden;
+                    backface-visibility: initial;
+                }
+
+                .header .skew .header-inner {
+                    padding: 97px;
+                    margin-left: auto;
+                    margin-right: auto;
+                    color: white;
+                }
+
+            .logo {
+                margin-top: 12px;
+            }
+
+                .logo img {
+                    height: auto;
+                    width: 100px;
+                }
+
+            .Customer {
+                float: left;
+                margin-top: -75px;
+                margin-left: -60px;
+            }
+
+            tfoot tr td {
+                color: #03535e;
+            }
+
+
+            page[size="A4"] {
+                background: white;
+                display: block;
+            }
+
+            /*@@media print {
+          page[size="A4"] {
+            margin: 0;
+            box-shadow: 0;
+          }
+        }*/
+
+
+            #background {
+                position: absolute;
+                z-index: 0;
+            }
+
+            #content {
+                position: absolute;
+                z-index: 1;
+            }
+
+            #bg-text {
+                background: url(/assets/PDF/watermark.jpg);
+                background-repeat: no-repeat;
+                height: 473px;
+                width: 539px;
+                margin-top: 14%;
+                opacity: 0.1;
+                margin-left: 250px;
+            }
+
+            .page-wrapper {
+                width: 99%;
+                margin-top: 10px;
+                display: inline-block;
+            }
+
+            .table-header {
+                padding: 2px;
+            }
+
+            .table-pagenumber {
+                float: right;
+                margin-right: 2px;
+                color: #03535e;
+            }
+
+
+
+            .footer {
+                /* position: fixed; */
+                left: 0;
+                bottom: 0;
+                width: 100%;
+                background-color: #03535e;
+                color: white;
+                text-align: center;
+                height: 15%;
+                margin-top: 1%;
+            }
+
+                 .footerIGST {
+                /* position: fixed; */
+                left: 0;
+                bottom: 0;
+                width: 100%;
+                background-color: #03535e;
+                color: white;
+                text-align: center;
+                height: 15%;
+                margin-top: 5%;
+            }
+
+        .table-header p {
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <page size="A4">
+
+        <header class="header" id="header">
+            <div class="skew">
+                <div class="header-inner">
+                    <div class="Customer">
+                        <h1 style="color: white; margin: 0px;">@Model.FULLNAME</h1>
+                        <span style="font-weight: 600; font-size: 13px;"> GST NO: </span> @Model.GSTNUMBER
+                        <br />
+                        <span style="font-weight: 600; font-size: 13px;"> MOB: </span>@Model.MOBILENUMBER
+                        <br />
+                        <span style="font-weight: 600; font-size: 13px;">ADDRESS: </span>@Model.ADDRESSLINEONE <br />@Model.ADDRESSLINETWO ,
+                        <br>
+                        @Model.STATE , @Model.CITY @Model.PINCODE ,@Model.COUNTRY
+                        <br><br>
+                        <table style="width: 366px; height: 48px; margin-left: -3px;">
+                            <tbody>
+                                <tr>
+                                    <td style="width: 70px; font-weight: 600; font-size: 13px;">&nbsp;DATE</td>
+                                    <td style="width: 120px; font-weight: 600; font-size: 13px; ">INVOICE NO.</td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 70px; ">@Model.SALESDATE</td>
+                                    <td style="width: 120px; ">@Model.SALESID</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="float:right;" class="logo">
+                        <img src="~/assets/PDF/logo.jpg" />
+
+                    </div>
+
+                </div>
+            </div>
+        </header>
+
+        <div id="background">
+            <div id="bg-text"></div>
+        </div>
+
+        <div id="content">
+
+            <div class="page-wrapper" id="page1">
+                <div class="table-header">
+                    <span class="table-pagenumber">
+                        C-119 BONANZA INDL ESTATE NEAR WEH <br>
+                        ASHOK NAGAR KANDIVALI EAST MUM-400101<br>
+                        GST NO:- 27APWPV1196H1Z0
+                    </span>
+
+                </div>
+            </div>
+
+
+            <div class="invoice page-wrapper">
+                <table border="0" cellspacing="0" cellpadding="0">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th class="text-left">DESCRIPTION</th>
+                            <th class="text-left">HSN</th>
+                            <th class="text-right">QTY</th>
+                            <th class="text-right">WTY</th>
+                            <th class="text-right">PRICE</th>
+                            <th class="text-right">AMOUNT</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+
+                        @foreach (var item in @Model.SALESITEMS)
+                        {
+                            <tr>
+                                <td class="no">@item.ITEMNO</td>
+                                <td class="text-left" style="width: 100%;">
+                                    @item.ITEMNAME
+                                </td>
+                                <td class="">@item.HSN</td>
+                                <td class="unit">@item.QUNATITY.ToString("0.##")</td>
+                                <td class="qty">@item.WARRANTY</td>
+                                <td class="unit">₹ @item.PRICE.ToString("0.##")</td>
+                                <td class="total">₹ @item.AMOUNT.ToString("0.##")</td>
+                            </tr>
+                        }
+
+                    </tbody>
+
+
+                </table>
+            </div>
+        </div>
+
+        <div class="billing">
+            <div style="width: 50%; float:left; height:120px; text-align: center; margin-top: 38px; color: #03535e; font-weight: 600;">
+                CURRENT ACCOUNT
+                <P>
+                    BANK:- HINDUSTAN BANK <br>
+                    IFSC :- SVCB0001019 <br>
+                    ACCOUNT:- 201904180000110 <br>
+                    NAME:- JAYSONS
+                </P>
+            </div>
+
+            <table style="float: right; margin: 10px;">
+                <tfoot>
+                    <tr>
+                        <td colspan="2"></td>
+                        <td colspan="3">SUBTOTAL</td>
+                        <td>₹ @Model.SALESAMOUNT.ToString("0.##")</td>
+                    </tr>
+                    @if (Model.TAXSLAB == "IGST")
+                    {
+                        <tr>
+                            <td colspan="2"></td>
+                            <td colspan="3">IGST 18%</td>
+                            <td>₹ @Model.IGST.ToString("0.##")</td>
+                        </tr>
+
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="2"></td>
+                            <td colspan="3">CGST 9%</td>
+                            <td>₹ @Model.CGST.ToString("0.##")</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"></td>
+                            <td colspan="3">SGST 9%</td>
+                            <td>₹ @Model.SGST.ToString("0.##")</td>
+                        </tr>
+                    }
+                    <tr>
+                        <td colspan="2"></td>
+                        <td colspan="3">DISCOUNT</td>
+                        <td>₹ @Model.DISCOUNT.ToString("0.##")</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"></td>
+                        <td colspan="3">GRAND TOTAL</td>
+                        <td>₹ @Model.SALESAMOUNTGST.ToString("0.##")</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        @if (Model.TAXSLAB == "IGST")
+        {
+            <footer class="footerIGST page-wrapper">
+
+
+                <div class="table-header">
+
+                    <table style="width: 100%; font-size: 10px;">
+                        <tbody>
+                            <tr style="height: 23px;">
+                                <td style="width: 497px; height: 92px; text-align: left;" rowspan="5">
+                                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: red;">
+                                        *CONDITION APPLY
+                                    </span><br /> 1) CHARGES INCLUDE TO SHIFT CAMERA FROM ONE PLACE TO ANOTHER<br /> 2) NO
+                                    WARRANTY ON PHYSICALLY DAMAGE AND BURNT ITEMS.<br /> 3) PAYMENT TERM:- CASH/CHEQUE<br /> 4) GOOD ONCE
+                                    SOLD WILL NOT BE TAKEN BACK<br /> 5) PAYMENT IN ADVANCE<br /> 6) REPAIRS AND REPLACEMENT OF MATERIAL
+                                    RECEIVED UNDER WARRANTY WILL TAKE MINIMUM 15-20 DAYS.
+                                </td>
+                                <td style="width: 118px; height: 23px;">&nbsp;</td>
+                                <td style="width: 176px; height: 23px;">&nbsp;</td>
+                            </tr>
+                            <tr style="height: 23px;">
+                                <td style="width: 118px; height: 23px;">&nbsp;</td>
+                                <td style="width: 176px; height: 23px;">&nbsp;</td>
+                            </tr>
+                            <tr style="height: 23px;">
+                                <td style="width: 118px; height: 23px;">&nbsp;RECIEVER SIGNATURE</td>
+                                <td style="width: 176px; height: 23px;">AUTHORIZED SIGNATURE</td>
+                            </tr>
+                            <tr style="height: 23px;">
+                                <td style="width: 118px; height: 23px;">&nbsp;</td>
+                                <td style="width: 176px; height: 23px;">&nbsp;</td>
+                            </tr>
+                            <tr style="height: 23px;">
+                                <td style="width: 118px; height: 23px;">&nbsp;_____________________</td>
+                                <td style="width: 176px; height: 23px;">&nbsp;_____________________</td>
+                            </tr>
+
+                            <tr style="height: 23px;">
+                                <td style="width: 118px; height: 23px;" colspan="4">
+                                    &nbsp;*********THIS IS COMPUTER GENERATED
+                                    INVOICE************
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+
+
+
+            </footer>
+        }
+        else
+        {
+            <footer class="footer page-wrapper">
+
+
+                <div class="table-header">
+
+                    <table style="width: 100%; font-size: 10px;">
+                        <tbody>
+                            <tr style="height: 23px;">
+                                <td style="width: 497px; height: 92px; text-align: left;" rowspan="5">
+                                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                    &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span style="color: red;">
+                                        *CONDITION APPLY
+                                    </span><br /> 1) CHARGES INCLUDE TO SHIFT CAMERA FROM ONE PLACE TO ANOTHER<br /> 2) NO
+                                    WARRANTY ON PHYSICALLY DAMAGE AND BURNT ITEMS.<br /> 3) PAYMENT TERM:- CASH/CHEQUE<br /> 4) GOOD ONCE
+                                    SOLD WILL NOT BE TAKEN BACK<br /> 5) PAYMENT IN ADVANCE<br /> 6) REPAIRS AND REPLACEMENT OF MATERIAL
+                                    RECEIVED UNDER WARRANTY WILL TAKE MINIMUM 15-20 DAYS.
+                                </td>
+                                <td style="width: 118px; height: 23px;">&nbsp;</td>
+                                <td style="width: 176px; height: 23px;">&nbsp;</td>
+                            </tr>
+                            <tr style="height: 23px;">
+                                <td style="width: 118px; height: 23px;">&nbsp;</td>
+                                <td style="width: 176px; height: 23px;">&nbsp;</td>
+                            </tr>
+                            <tr style="height: 23px;">
+                                <td style="width: 118px; height: 23px;">&nbsp;RECIEVER SIGNATURE</td>
+                                <td style="width: 176px; height: 23px;">AUTHORIZED SIGNATURE</td>
+                            </tr>
+                            <tr style="height: 23px;">
+                                <td style="width: 118px; height: 23px;">&nbsp;</td>
+                                <td style="width: 176px; height: 23px;">&nbsp;</td>
+                            </tr>
+                            <tr style="height: 23px;">
+                                <td style="width: 118px; height: 23px;">&nbsp;_____________________</td>
+                                <td style="width: 176px; height: 23px;">&nbsp;_____________________</td>
+                            </tr>
+
+                            <tr style="height: 23px;">
+                                <td style="width: 118px; height: 23px;" colspan="4">
+                                    &nbsp;*********THIS IS COMPUTER GENERATED
+                                    INVOICE************
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+
+
+
+            </footer>
+        }
+    </page>
+</body>
+
+</html>

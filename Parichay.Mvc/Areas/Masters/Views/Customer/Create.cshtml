@@ -1,0 +1,176 @@
+﻿@using Parichay.Common
+@model Parichay.Bussiness.Model.CustomerViewModel
+@{
+    ViewBag.Title = "CREATE CUSTOMER";
+    Layout = "~/Views/Shared/_LayoutPageDashboard.cshtml";
+
+}
+@section Scripts
+{
+    <script type="text/javascript" src="@Url.Content("~/Commonjs/Customer/CustomerAddEdit.js")"></script>
+}
+<style>
+    .btn {
+        font-size: 1.0rem;
+        font-weight: 500;
+    }
+    .app-page-title {
+        padding: 10px;
+        margin: -30px -30px 30px;
+        position: relative;
+    }
+     .error {
+      color: red;
+   }
+    #myTableAddList tr:hover, tr.selected {
+        background-color: #2748561f
+    }
+</style>
+<div class="app-main__inner">
+    <div class="app-page-title">
+        <div class="page-title-wrapper">
+            <a href="/masters/customer" style="text-decoration:none">
+                <div class="page-title-heading">
+                    <div>
+                        CUSTOMERS
+                    </div>
+                </div>
+            </a>
+
+            <div class="page-title-actions">
+                <div class="d-inline-block dropdown">
+                    @Html.Hidden("RedirectToIndex", Url.Action("Index", "Customer"))
+                    @if (Model.Id == 0)
+                    {
+                        <button class="mb-2 mr-2 btn btn-gradient-success" id="btn_SaveCustomer">SAVE</button>
+                    }
+                    else
+                    {
+                        <button class="mb-2 mr-2 btn btn-gradient-success" id="btn_SaveCustomer">SAVE</button>
+                        <button class="mb-2 mr-2 btn btn-gradient-info" id="btn_EditCustomer">EDIT</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <form id="FormCustomer">
+            <div class="form-row">
+                @Html.HiddenFor(x => x.Id)
+                @Html.HiddenFor(x => x.AddressGridSerialize)
+                <div class="col-md-4">
+                    <div class="position-relative form-group">
+                        @Html.LabelSuperScriptFor(x => x.FirstName, "FIRST NAME", "*", new { @class = "" })
+                        @Html.TextBoxFor(x => x.FirstName, new { @class = "form-control" })
+                        @*<input name="email" id="exampleEmail11" class="form-control">*@
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="position-relative form-group">
+                        @Html.LabelSuperScriptFor(x => x.MiddleName, "MIDDLE NAME", "", new { @class = "" })
+                        @*<input name="email" id="exampleEmail11" class="form-control">*@
+                        @Html.TextBoxFor(x => x.MiddleName, new { @class = "form-control" })
+
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="position-relative form-group">
+                        @Html.LabelSuperScriptFor(x => x.LastName, "LAST NAME", "*", new { @class = "" })
+                        @Html.TextBoxFor(x => x.LastName, new { @class = "form-control" })
+
+                        @*<input name="email" id="exampleEmail11" class="form-control">*@
+                    </div>
+                </div>
+
+            </div>
+            <div class="form-row">
+                <div class="col-md-3">
+                    <div class="position-relative form-group">
+                        @Html.LabelSuperScriptFor(x => x.MobileNumberOne, "MOBILE NUMBER 1", "*", new { @class = "" })
+                        @Html.TextBoxFor(x => x.MobileNumberOne, new { @class = "form-control" })
+
+                        @*<input name="Phone1" id="exampleEmail11" class="form-control">*@
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="position-relative form-group">
+                        @Html.LabelSuperScriptFor(x => x.MobileNumbertwo, "MOBILE NUMBER 2", "", new { @class = "" })
+                        @Html.TextBoxFor(x => x.MobileNumbertwo, new { @class = "form-control" })
+
+                        @*<input name="Phone1" id="exampleEmail11" class="form-control">*@
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="position-relative form-group">
+                        @Html.LabelSuperScriptFor(x => x.EmailId, "EMAIL ID", "", new { @class = "" })
+                        @Html.TextBoxFor(x => x.EmailId, new { @class = "form-control" })
+
+
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="position-relative form-group">
+                        @Html.LabelSuperScriptFor(x => x.GstNumber, "GST NUMBER", "", new { @class = "" })
+                        @Html.TextBoxFor(x => x.GstNumber, new { @class = "form-control" })
+
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    @Html.LabelSuperScriptFor(x => x.Gender, "GENDER", "*", new { @class = "" })
+                    <div class="position-relative form-group">
+                        <div>
+                            <div class="custom-checkbox custom-control custom-control-inline">
+                                <label class="form-check-label">MALE</label>
+                                @Html.RadioButtonFor(x => x.Gender,"MALE", new { @class = "form-check-input"})
+
+
+                            </div>
+                            <div class="custom-checkbox custom-control custom-control-inline">
+
+                                <label class="form-check-label">FEMALE</label>
+                                @Html.RadioButtonFor(x => x.Gender,"FEMALE", new { @class = "form-check-input"})
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="position-relative form-group">
+                        @Html.LabelSuperScriptFor(x => x.Remark, "REMARK", "", new { @class = "" })
+                        @Html.TextAreaFor(x => x.Remark, new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <button type="button" id="ModalOpen" class="btn-wide mb-2 mr-2 btn btn-gradient-primary btn-lg Button_AddlistAdd" data-toggle="modal" data-target=".bd-example-modal-lg" style="margin-left: 50%;">
+            ADD ADDRESS
+        </button>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="main-card mb-3 card">
+                    <div class="card-body">
+                        <h5 class="card-title">ADDRESSES</h5>
+                        <table class="mb-0 table" id="myTableheadList">
+                            <thead>
+                                <tr>
+                                    <th id="_AddressName">ADDRESS NAME</th>
+                                    <th id="_AddressLineOne">ADDRESS LINE 1</th>
+                                    <th id="_AddressLinetwo">ADDRESS LINE 2</th>
+                                    <th id="_Country">COUNTRY</th>
+                                    <th id="_State">STATE</th>
+                                    <th id="_City">CITY</th>
+                                    <th id="_pincode">ZIP</th>
+                                    <th id="_isDefault">IS DEFAULT</th>
+                                </tr>
+                            </thead>
+                            <tbody id="myTableAddList">
+                             
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

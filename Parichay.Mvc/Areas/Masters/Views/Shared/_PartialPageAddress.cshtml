@@ -1,0 +1,82 @@
+﻿@model Parichay.Bussiness.Model.CustomerViewModel
+@using Parichay.Common
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" style="display: none;" aria-hidden="true" id="squarespaceModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <form id="FormAdress">
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="col-md-12">
+                            <div class="position-relative form-group">
+                                @Html.HiddenFor(x => x.AddressID)
+                                @Html.LabelSuperScriptFor(x => x.AddressName, "ADDRESS NAME", "*", new { @class = "" })
+                                @Html.TextBoxFor(x => x.AddressName, new { @class = "form-control" })
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <div class="position-relative form-group">
+                                @Html.LabelSuperScriptFor(x => x.AddressLineOne, "ADDRESS LINE 1", "*", new { @class = "" })
+                                @Html.TextBoxFor(x => x.AddressLineOne, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="position-relative form-group">
+                                @Html.LabelSuperScriptFor(x => x.AddressLineTwo, "ADDRESS LINE 2", "*", new { @class = "" })
+                                @Html.TextBoxFor(x => x.AddressLineTwo, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-row">
+                        <div class="col-md-3">
+                            <div class="position-relative form-group">
+                                @Html.LabelSuperScriptFor(x => x.Country, "COUNTRY", "*", new { @class = "" })
+                                @Html.TextBoxFor(x => x.Country, new { @class = "form-control" })
+
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="position-relative form-group">
+                                @Html.LabelSuperScriptFor(x => x.City, "CITY", "*", new { @class = "" })
+                                @Html.TextBoxFor(x => x.City, new { @class = "form-control" })
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+
+                            <div class="position-relative form-group">
+                                @Html.LabelSuperScriptFor(x => x.State, "STATE", "*", new { @class = "" })
+                                @Html.TextBoxFor(x => x.State, new { @class = "form-control" })
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+
+                            <div class="position-relative form-group">
+                                @Html.LabelSuperScriptFor(x => x.pincode, "PINCODE", "*", new { @class = "" })
+                                @Html.TextBoxFor(x => x.pincode, new { @class = "form-control" })
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="CloseModal">CLOSE</button>
+                    <button type="button" class="btn btn-primary" id="btn_ModalAddressSave">SAVE</button>
+                    <button type="button" class="btn btn-danger" id="btn_ModalAddressdelete">DELETE</button>
+                </div>
+                </form>
+        </div>
+    </div>
+</div>

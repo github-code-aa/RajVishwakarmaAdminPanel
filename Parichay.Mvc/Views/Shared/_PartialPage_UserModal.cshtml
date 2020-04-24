@@ -1,0 +1,98 @@
+﻿@{
+    Layout = null;
+    var UserName = "";
+    if(Session["UserName"] != null)
+    {
+        UserName = Session["UserName"].ToString();
+    }
+
+}
+
+<div class="header-btn-lg pr-0">
+    <div class="widget-content p-0">
+        <div class="widget-content-wrapper">
+            <div class="widget-content-left">
+                <div class="btn-group">
+                    <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                       class="p-0 btn">
+                        <img width="42" class="rounded-circle" src="~/assets/images/avatars/1.jpg"
+                             alt="">
+                        <i class="material-icons ml-2">
+                            keyboard_arrow_down
+                        </i>
+                    </a>
+                    <div tabindex="-1" role="menu" aria-hidden="true"
+                         class="rm-pointers dropdown-menu-lg dropdown-menu dropdown-menu-right">
+                        <div class="dropdown-menu-header">
+                            <div class="dropdown-menu-header-inner" style="background-color: #223f49 !important;">
+                                <div class="menu-header-image opacity-2"
+                                     style="background-image: url('~/assets/images/dropdown-header/city4.jpg')">
+                                </div>
+                                <div class="menu-header-content text-left">
+                                    <div class="widget-content p-0">
+                                        <div class="widget-content-wrapper">
+                                            <div class="widget-content-left mr-3">
+                                                <img width="42" class="rounded-circle"
+                                                     src="~/assets/images/avatars/1.jpg" alt="">
+                                            </div>
+                                            <div class="widget-content-left">
+                                                <div class="widget-heading">
+                                                    @if (Session["UserName"] != null)
+                                                    {
+                                                    @UserName.ToString()
+                                                    }
+                                                </div>
+                                                <div class="widget-subheading opacity-8">
+                                                  Administrator
+                                                </div>
+                                            </div>
+                                            <div class="widget-content-right mr-2">
+                                                <button class="btn-pill btn-shadow btn-shine btn btn-focus" id="btn_logout">
+                                                    Logout
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="scroll-area-xs" style="height: 150px;">
+                            <div class="scrollbar-container ps">
+                                <ul class="nav flex-column">
+                                    <li class="nav-item-header nav-item">
+                                        My Account
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="javascript:void(0);" class="nav-link">
+                                            Recover
+                                            Password
+                                        </a>
+                                    </li>
+                                   
+                                    <li class="nav-item">
+                                        <a href="javascript:void(0);" class="nav-link">
+                                            Logs
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="widget-content-left  ml-3 header-user-info">
+                <div class="widget-heading">
+                    @if (Session["UserName"] != null)
+                    {
+                        @UserName.ToString()
+                    }
+                </div>
+                <div class="widget-subheading">
+                    JAYSONS & SONS MANAGER
+                </div>
+            </div>
+            <div class="widget-content-right header-user-info ml-3">
+            </div>
+        </div>
+    </div>
+</div>

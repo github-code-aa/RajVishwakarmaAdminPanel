@@ -1,0 +1,120 @@
+﻿@{
+	ViewBag.Title = "CUSTOMER";
+	Layout = "~/Views/Shared/_LayoutPageDashboard.cshtml";
+}
+@section Scripts
+{
+	<script type="text/javascript" src="@Url.Content("~/Commonjs/Customer/Customer.js")"></script>
+}
+<style>
+	.btn {
+		font-size: 1.0rem;
+		font-weight: 500;
+	}
+
+	.app-page-title {
+		padding: 10px;
+		margin: -30px -30px 30px;
+		position: relative;
+	}
+
+	.btn-icon .btn-icon-wrapper {
+		margin-right: .5rem;
+		margin-left: 0;
+		margin-top: 0;
+		font-size: 30px;
+		vertical-align: middle;
+		transition: color .1s;
+		display: inline-block;
+	}
+	#Mytable tr{
+		text-transform:uppercase;
+	}
+
+	.has-error .help-block, .has-error .control-label, .has-error .radio, .has-error .checkbox, .has-error .radio-inline, .has-error .checkbox-inline {
+    color: #a94442;
+}
+</style>
+
+<div class="app-main__inner">
+	<div class="app-page-title">
+		<div class="page-title-wrapper">
+			<div class="page-title-heading">
+				<div>
+					CUSTOMERS
+				</div>
+			</div>
+			<div class="page-title-actions">
+				<div class="d-inline-block dropdown">
+					<form action="customer/create/0">
+					<button class="mb-2 mr-2 btn btn-gradient-primary">CREATE</button>
+					</form>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="card-body">
+		<button id="ReloadGrid" style="display:none">Modal</button>
+		<button id="ClearGrid" style="display:none">Modal</button>
+
+
+		<div class="boxFAQ" id="questionMarkId">
+			<div class="popover popover-custom fade bs-popover-auto" role="tooltip" id="popover594729" style="position: absolute;  top: 0px; left: 0px;" x-placement="right">
+				<div class="arrow" style="top: 131px;"></div><h3 class="popover-header"></h3><div class="popover-body">
+					<div class="dropdown-menu-header">
+						<div class="dropdown-menu-header-inner bg-primary">
+							<div class="menu-header-image opacity-5" style="background-image: url('assets/images/dropdown-header/abstract2.jpg');"></div>
+							<div class="menu-header-content">
+							<h5 class="menu-header-title" id="lbl_fullname"></h5>
+							<h6 class="menu-header-subtitle" id="lbl_phoneNumber"></h6>
+							</div>
+						</div>
+					</div>
+					<ul class="nav flex-column">
+						<li class="nav-item-header nav-item">Activity</li>
+						<li class="nav-item-divider nav-item"></li>
+						<li class="nav-item"><a href="javascript:void(0);" class="nav-link" id="EditRow">EDIT</a></li>
+						<li class="nav-item"><a href="javascript:void(0);" class="nav-link" id="DeleteRow">DELETE</a></li>
+						@Html.Hidden("RedirectTo", Url.Action("Create", "Customer",new {id="__id__" }))
+					</ul>
+				</div>
+			</div>
+		</div>
+
+
+
+
+			<table style="width: 100%;" id="example" class="table table-hover table-striped table-bordered">
+				<thead>
+					<tr>
+						<th id="ID" style="display:none">ID</th>
+						<th id="NAME">NAME</th>
+						<th id="GENDER">GENDER</th>
+						<th id="MOBILENUMBER">MOBILE NUMBER</th>
+						<th id="EMAILID">EMAILID</th>
+						<th id="GSTNUMBER">GST NUMBER</th>
+					</tr>
+				</thead>
+				<tbody id="Mytable">
+
+					@*Load Table Content from ajax*@
+
+				</tbody>
+				<tfoot>
+					<tr>
+						<th style="display:none">ID</th>
+						<th>NAME</th>
+						<th>GENDER</th>
+						<th>MOBILE NUMBER</th>
+						<th>EMAILID</th>
+						<th>GST NUMBER</th>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+
+	</div>
+
+

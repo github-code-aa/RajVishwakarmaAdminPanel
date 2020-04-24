@@ -1,0 +1,231 @@
+﻿@using Parichay.Common
+@model Parichay.Bussiness.Model.SalesViewModel
+@{
+    ViewBag.Title = "CREATE SALES";
+    Layout = "~/Views/Shared/_LayoutPageDashboard.cshtml";
+
+}
+@section Scripts
+{
+    <script type="text/javascript" src="@Url.Content("~/Commonjs/Sales/SalesAddEdit.js")"></script>
+}
+<style>
+
+    #Mytable td{
+		text-transform:uppercase;
+	}
+
+    .btn {
+        font-size: 1.0rem;
+        font-weight: 500;
+    }
+
+    .app-page-title {
+        padding: 10px;
+        margin: -30px -30px 30px;
+        position: relative;
+    }
+
+    .error {
+        color: red;
+    }
+
+
+    
+.add, .cut
+{
+	border-width: 1px;
+	display: block;
+	font-size: .8rem;
+	padding: 0.25em 0.5em;	
+	float: left;
+	text-align: center;
+	width: 1.6em;
+}
+
+    .add{
+        background: #9AF;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        background-image: -moz-linear-gradient(#00ADEE 5%, #0078A5 100%);
+        background-image: -webkit-linear-gradient(#00ADEE 5%, #0078A5 100%);
+        border-radius: 0.5em;
+        border-color: #0076A3;
+        color: #FFF;
+        cursor: pointer;
+        font-weight: bold;
+        text-shadow: 0 -1px 2px rgba(0,0,0,0.333);
+    }
+
+    .cut {
+        background: #9AF;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        background-image: -moz-linear-gradient(#e80c16 5%, #dc10b0 100%);
+        background-image: -webkit-linear-gradient(#e80c16 5%, #dc10b0 100%);
+        border-radius: 0.5em;
+        border-color: #0076A3;
+        color: #FFF;
+        cursor: pointer;
+        font-weight: bold;
+        text-shadow: 0 -1px 2px rgba(0,0,0,0.333);
+    }
+
+    /*.add { margin: -2.5em 0 0; }*/
+
+    .add:hover {
+        background: #00ADEE;
+    }
+
+    .cut {
+        opacity: 0;
+        position: relative;
+        top: 0;
+        left: -4.5em;
+    }
+    .cut {
+        -webkit-transition: opacity 100ms ease-in;
+    }
+
+    tr:hover .cut {
+        opacity: 1;
+    }
+
+    
+table.balance { float: right; width: 15%;margin-right: 400px; }
+table.balance:after { clear: both; content: ""; display: table; }
+
+table.balance th, table.balance td { width: 0%; }
+table.balance td { text-align: left; }
+
+
+</style>
+<div class="app-main__inner">
+    <div class="app-page-title">
+        <div class="page-title-wrapper">
+            <a href="/Transactions/Sales" style="text-decoration:none">
+                <div class="page-title-heading">
+                    <div>
+                            SALES
+                        @if (Model.Id > 0)
+                        {
+                        <div class="page-title-subheading">
+                            @Model.SalesId
+                        </div>
+                        }
+                        
+
+                    </div>
+                </div>
+            </a>
+
+            <div class="page-title-actions">
+                <div class="d-inline-block dropdown">
+                    @Html.Hidden("RedirectToIndex", Url.Action("Index", "Sales"))
+                    @if (Model.Id == 0)
+                    {
+                        <button class="mb-2 mr-2 btn btn-gradient-success" id="btn_SaveSales">SAVE</button>
+                        <button class="mb-2 mr-2 btn btn-gradient-info" id="btn_ClearSales">CLEAR</button>
+                    }
+                    else
+                    {
+                        <button class="mb-2 mr-2 btn btn-gradient-success" id="btn_SaveSales">SAVE</button>
+                        <button class="mb-2 mr-2 btn btn-gradient-info" id="btn_EditSales">EDIT</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <form id="FormSales">
+            <div class="form-row">
+                @Html.HiddenFor(x => x.Id)
+                @Html.HiddenFor(x => x.CustomerId)
+                @Html.HiddenFor(x => x.SalesItemGridSerialize)
+                <div class="col-md-2">
+                    <div class="position-relative form-group">
+                        @Html.LabelSuperScriptFor(x => x.SalesDate, "BILL DATE", "*", new { @class = "" })
+                        @if (Model.Id > 0)
+                        {
+                            @Html.TextBoxFor(x => x.SalesDate, new { @class = "form-control" })
+                        }
+                        else
+                        {
+                            @Html.TextBoxFor(x => x.SalesDate, new { @class = "form-control input-mask-trigger", data_toggle = "datepicker-sales", data_inputmask_alias = "datetime", data_inputmask_inputformat = "dd/mm/yyyy", im_insert = "false" })
+                        }
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="position-relative form-group">
+                        @Html.LabelSuperScriptFor(x => x.CustomerName, "CUSTOMER NAME", "*", new { @class = "" })
+                        @Html.TextBoxFor(x => x.CustomerName, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="position-relative form-group">
+                        @Html.LabelSuperScriptFor(x => x.Discount, "DISCOUNT ₹", "", new { @class = "" })
+                        @Html.TextBoxFor(x => x.Discount, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="position-relative form-group">
+                        @Html.LabelSuperScriptFor(x => x.Remarks, "REMARK", "", new { @class = "" })
+                        @Html.TextBoxFor(x => x.Remarks, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    @Html.LabelSuperScriptFor(x => x.TaxSlab, "TAX SLAB", "*", new { @class = "" })
+                    <div class="position-relative form-group">
+                        <div>
+                            <div class="custom-checkbox custom-control custom-control-inline">
+                                <label class="form-check-label">IGST</label>
+                                @Html.RadioButtonFor(x => x.TaxSlab, "IGST", new { @class = "form-check-input" })
+
+
+                            </div>
+                            <div class="custom-checkbox custom-control custom-control-inline">
+                                <label class="form-check-label">CGST-SGST</label>
+                                @Html.RadioButtonFor(x => x.TaxSlab, "CGST-SGST", new { @class = "form-check-input" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="main-card mb-3 card">
+                    <div class="card-body">
+                        <h5 class="card-title">SALES ITEMS</h5>
+                        <table class="inventory mb-0 table" id="myTableheadList">
+                            <thead >
+                                <tr>
+                                    <th>#</th>
+                                    <th id="ITEM">ITEM</th>
+                                    <th id="WARRANTY">WARRANTY</th>
+                                    <th id="HSN">HSN CODE</th>
+                                    <th id="RATE">RATE</th>
+                                    <th id="QUANTITY">QUANTITY</th>
+                                    <th id="PRICE">PRICE</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="Mytable">
+                            </tbody>
+                        </table>
+                        <a class="add" style="color: white;">+</a>
+
+                        <br /><br /><br /><br />
+
+                        <table class="balance">
+                            <tr>
+                                <th><span>TOTAL</span></th>
+                                <td><span data-prefix>&#8377; &nbsp;</span><span style="color: #406e80;font-family: fantasy;"></span></td>
+                            </tr>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

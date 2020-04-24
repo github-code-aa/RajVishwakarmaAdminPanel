@@ -1,0 +1,170 @@
+﻿@using Parichay.Common
+@model Parichay.Bussiness.Model.CustomerPaymentViewModel
+@{
+    ViewBag.Title = "CUSTOMER PAYMENT";
+    Layout = "~/Views/Shared/_LayoutPageDashboard.cshtml";
+}
+@section Scripts
+{
+    <script type="text/javascript" src="@Url.Content("~/Commonjs/CustomerPayment/CustomerPayment.js")"></script>
+}
+<style>
+    .btn {
+        font-size: 1.0rem;
+        font-weight: 500;
+    }
+
+    .app-page-title {
+        padding: 10px;
+        margin: -30px -30px 30px;
+        position: relative;
+    }
+
+    .btn-icon .btn-icon-wrapper {
+        margin-right: .5rem;
+        margin-left: 0;
+        margin-top: 0;
+        font-size: 30px;
+        vertical-align: middle;
+        transition: color .1s;
+        display: inline-block;
+    }
+
+    .error {
+        color: red;
+    }
+</style>
+<style>
+    .ui-autocomplete {
+        max-height: 200px;
+        overflow-y: auto;
+        /* prevent horizontal scrollbar */
+        overflow-x: hidden;
+        /* add padding to account for vertical scrollbar */
+        padding-right: 20px;
+    }
+
+
+    .ui-state-active, .ui-widget-content .ui-state-active, .ui-widget-header .ui-state-active, a.ui-button:active, .ui-button:active, .ui-state-active.ui-button:hover {
+        border: 1px solid #000;
+        background: rgba(38, 72, 85, 0.35);
+        width: 115%;
+    }
+</style>
+
+<div class="app-main__inner">
+    <div class="app-page-title">
+        <div class="page-title-wrapper">
+            <div class="page-title-heading">
+                <div>
+                    CUSTOMER PAYMENT
+                </div>
+            </div>
+            <div class="page-title-actions">
+                <div class="d-inline-block dropdown">
+                    <button class="mb-2 mr-2 btn btn-gradient-success" id="btn_CustomerPayment">SAVE</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <form id="FormCusPayment">
+            <div class="form-row">
+                @Html.HiddenFor(x => x.CustomerId)
+                <div class="col-md-3">
+                    <div class="position-relative form-group">
+                        @Html.LabelSuperScriptFor(x => x.CustomerName, "CUSTOMER NAME", "*", new { @class = "" })
+                        @Html.TextBoxFor(x => x.CustomerName, new { @class = "form-control" })
+
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="position-relative form-group">
+                        @Html.LabelSuperScriptFor(x => x.SalesId, "INVOICE", "*", new { @class = "" })
+                        @Html.TextBoxFor(x => x.SalesId, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="position-relative form-group">
+                        @Html.LabelSuperScriptFor(x => x.PaymentAmount, "AMOUNT", "*", new { @class = "" })
+                        @Html.TextBoxFor(x => x.PaymentAmount, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="position-relative form-group">
+                        @Html.LabelSuperScriptFor(x => x.Remarks, "REMARKS", "*", new { @class = "" })
+                        @Html.TextBoxFor(x => x.Remarks, new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div class="main-card mb-3 card d-xl-none" id="paymentsummary">
+            <div class="no-gutters row">
+                <div class="col-md-6 col-xl-4">
+                    <div class="widget-content">
+                        <div class="widget-content-wrapper">
+                            <div class="widget-content-right ml-0 mr-3">
+                                <div class="widget-numbers text-success" id="totalamount"></div>
+                            </div>
+                            <div class="widget-content-left">
+                                <div class="widget-heading">TOTAL AMOUNT</div>
+                                @*<div class="widget-subheading">Last year expenses</div>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-4">
+                    <div class="widget-content">
+                        <div class="widget-content-wrapper">
+                            <div class="widget-content-right ml-0 mr-3">
+                                <div class="widget-numbers text-warning" id="paid"></div>
+                            </div>
+                            <div class="widget-content-left">
+                                <div class="widget-heading">PAID</div>
+                                @*<div class="widget-subheading">Total revenue streams</div>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-4">
+                    <div class="widget-content">
+                        <div class="widget-content-wrapper">
+                            <div class="widget-content-right ml-0 mr-3">
+                                <div class="widget-numbers text-danger" id="pending"></div>
+                            </div>
+                            <div class="widget-content-left">
+                                <div class="widget-heading">PENDING</div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        @*d-xl-none*@
+        @*add this class to  hide div*@
+        <div class="main-card mb-3 card d-xl-none" id="paymentlogs">
+            <div class="card-body">
+                <h5 class="card-title">PAYMENT LOGS</h5>
+                <div class="scroll-area">
+                    <div class="scrollbar-container ps ps--active-y" id="SummaryList">
+
+
+
+                        <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
+                            <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+                        </div>
+                        <div class="ps__rail-y" style="top: 0px; right: 0px; height: 400px;">
+                            <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 157px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
