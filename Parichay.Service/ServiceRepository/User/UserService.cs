@@ -21,6 +21,7 @@ namespace Parichay.Service
         }
         public bool CheckValidUser(string UserName,string PassWord)
         {
+            //check the valid user
             return _IUserData.CheckValidUser(UserName, PassWord);
         }
     }
